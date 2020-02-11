@@ -38,9 +38,31 @@ def transladar(imagen,x=0,y=0):
     return img_traslada, sufijo
 
 
+def cannyficar(imagen):
+    gray = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
+    canificada = imutils.auto_canny(gray)
+    return canificada, '_canf'
+
+def cannyficar2(imagen):
+    gray = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
+    gray = cv2.GaussianBlur(gray, (3, 3), 0)
+    canificada = cv2.Canny(gray, 20, 100)
+    return canificada, '_canf'
+
+
+def voltearVertical(imagen):
+    volteada = cv2.flip(imagen, 0)
+    return volteada, '_flipv'
+
+def voltearHorizontal(imagen):
+    volteada = cv2.flip(imagen, 1)
+    return volteada, '_fliph'
+
+
 def transformar_archivo(ruta_origen, ruta_destino, nombre_archivo,
                         rotar90=True, rotar180=True, rotar270=True,
-                        trasladarxy=True, x=0, y=0):
+                        trasladarxy=True, x=0, y=0,
+                        canificada=True, volvert=True, volhort=True):
     i = nombre_archivo.find(".")
     archivo_nombre = nombre_archivo[:i]
     archivo_extension = nombre_archivo[i+1:]
@@ -61,6 +83,18 @@ def transformar_archivo(ruta_origen, ruta_destino, nombre_archivo,
         salvar_imagen(nimg, na)
     if trasladarxy:
         nimg, sufijo = transladar(img,x,y)
+        na = destino.format(sufijo)
+        salvar_imagen(nimg, na)
+    if canificada:
+        nimg, sufijo = cannyficar2(img)
+        na = destino.format(sufijo)
+        salvar_imagen(nimg, na)
+    if volvert:
+        nimg, sufijo = voltearVertical(img)
+        na = destino.format(sufijo)
+        salvar_imagen(nimg, na)
+    if volhort:
+        nimg, sufijo = voltearHorizontal(img)
         na = destino.format(sufijo)
         salvar_imagen(nimg, na)
 
