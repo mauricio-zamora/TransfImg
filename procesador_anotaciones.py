@@ -7,6 +7,20 @@ from xml.dom import minidom
 import glob
 
 
+def convertir_anotacion_individual(nombre_anotacion, ruta_destino):
+    nombre_archivo = nombre_anotacion.split('/')[-1]
+    ruta_archivo = nombre_anotacion[:nombre_anotacion.find(nombre_archivo)]
+    tree = ET.parse(nombre_anotacion)
+    root = tree.getroot()
+    a = procesar_anotacion(tree)
+    # imprimir_anotation(a)
+    b = reprocesar_anotacion(a)
+    # print('#######################################################################')
+    # imprimir_anotation(b)
+    r = regenerarxml(b)
+    escribir_xml(r, ruta_destino + nombre_archivo)
+
+
 def convertir_anotaciones_directorio(origen, destino):
     nombres_anotaciones = [f for f in glob.glob(origen + '/*.xml')]
     for nombre_anotacion in nombres_anotaciones:
@@ -225,6 +239,7 @@ def main():
     # r = regenerarxml(b)
     # escribir_xml(r,'r_limpio.xml')
 
-    convertir_anotaciones_directorio('/home/mauricio/Alicante/ImageManipulator/','/home/mauricio/Alicante/ImageManipulator/salida/')
+    convertir_anotacion_individual('/home/mauricio/Alicante/ImageManipulator/wrench_combination-00007b.xml','/home/mauricio/Alicante/ImageManipulator/salida/')
+    # convertir_anotaciones_directorio('/home/mauricio/Alicante/ImageManipulator/','/home/mauricio/Alicante/ImageManipulator/salida/')
 
 main()

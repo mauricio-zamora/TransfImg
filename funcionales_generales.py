@@ -10,3 +10,10 @@ def numero_es_none(texto, salida=-1):
     if texto is not None:
         valor = texto
     return valor
+
+def verficar_ruta_directorio(ruta):
+    if (ruta[-1] != '/'):
+        salida = ruta + '/'
+    else:
+        salida = ruta
+    return salida
