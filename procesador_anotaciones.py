@@ -5,7 +5,37 @@ from annotation import *
 from procesador_yolo_anotacion_lxml import *
 from xml.dom import minidom
 import glob
+import os
+from copy import deepcopy
 
+
+def generar_mapeo_clases(listado_anotaciones, lista_clases):
+    mapa_archivos = {}
+    mapa_clases = {}
+    for k, v in listado_anotaciones.items():
+        mapa_archivos[k] = -1
+    for clase in lista_clases:
+        mapa_clases[clase] = deepcopy(mapa_archivos)
+    for k_nombre, v_anotacion in listado_anotaciones.items():
+        for obj in v_anotacion.objects:
+            mapa_clases[obj.name][k_nombre] = 1
+    return mapa_clases
+
+
+def listar_anotaciones(directorio_base, listado_nombres):
+    salida = {}
+    clases = []
+    for nombre in listado_nombres:
+        nombre_anotacion = os.path.join(directorio_base, 'Annotations', nombre + '.xml')
+        tree = ET.parse(nombre_anotacion)
+        root = tree.getroot()
+        a = procesar_anotacion(tree)
+        for obj in a.objects:
+            if obj.name not in clases:
+                clases.append(obj.name)
+        salida[nombre] = a
+    clases.sort()
+    return  salida, clases
 
 def convertir_anotacion_individual(nombre_anotacion, ruta_destino):
     nombre_archivo = nombre_anotacion.split('/')[-1]
