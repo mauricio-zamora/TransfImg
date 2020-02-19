@@ -74,6 +74,7 @@ def procesar_data_set(directorio_base):
         nimg, sufijo = rotar_90(img)
         na = destino.format(sufijo)
         anotacion_rota90 = reprocesar_anotacion(anotacion_cruda)
+        anotacion_rota90.filename = nombre_elemento + sufijo + '.jpg'
         for o in anotacion_rota90.objects:
             x1 = o.bndbox['xmin']
             y1 = o.bndbox['ymin']
@@ -92,6 +93,7 @@ def procesar_data_set(directorio_base):
         nimg, sufijo = rotar_180(img)
         na = destino.format(sufijo)
         anotacion_rota180 = reprocesar_anotacion(anotacion_cruda)
+        anotacion_rota180.filename = nombre_elemento + sufijo + '.jpg'
         for o in anotacion_rota180.objects:
             x1 = o.bndbox['xmin']
             y1 = o.bndbox['ymin']
@@ -110,6 +112,7 @@ def procesar_data_set(directorio_base):
         nimg, sufijo = rotar_270(img)
         na = destino.format(sufijo)
         anotacion_rota270 = reprocesar_anotacion(anotacion_cruda)
+        anotacion_rota270.filename = nombre_elemento + sufijo + '.jpg'
         for o in anotacion_rota270.objects:
             x1 = o.bndbox['xmin']
             y1 = o.bndbox['ymin']
@@ -123,6 +126,40 @@ def procesar_data_set(directorio_base):
         escribir_xml(xml_anotacion_rota270, os.path.join(annotations, nombre_elemento + sufijo + '.xml'))
         salvar_imagen(nimg, os.path.join(jpeg_images, na))
         # ROTAR 270 - Fin
+        # CANNYFICAR - Inicio
+        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        nimg, sufijo = cannyficar2(img)
+        na = destino.format(sufijo)
+        anotacion_cann = reprocesar_anotacion(anotacion_cruda)
+        anotacion_cann.filename = nombre_elemento + sufijo + '.jpg'
+
+        xml_anotacion_cann = regenerarxml(anotacion_cann)
+        escribir_xml(xml_anotacion_cann, os.path.join(annotations, nombre_elemento + sufijo + '.xml'))
+        salvar_imagen(nimg, os.path.join(jpeg_images, na))
+        # CANNYFICAR - Fin
+
+        # TRASLADAR - Inicio
+        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        offset_x = 100
+        offset_y = 100
+        nimg, sufijo = transladar(img, offset_x, offset_y)
+        na = destino.format(sufijo)
+        anotacion_trans = reprocesar_anotacion(anotacion_cruda)
+        anotacion_trans.filename = nombre_elemento + sufijo + '.jpg'
+        for o in anotacion_trans.objects:
+            x1 = o.bndbox['xmin']
+            y1 = o.bndbox['ymin']
+            x2 = o.bndbox['xmax']
+            y2 = o.bndbox['ymax']
+            o.bndbox['xmin'] = str(sumar_enteros_dentro_limite(x1, offset_x, 500))
+            o.bndbox['ymin'] = str(restar_enteros_dentro_limite(y1, offset_x, 0))
+            o.bndbox['xmax'] = str(sumar_enteros_dentro_limite(x2, offset_x, 500))
+            o.bndbox['ymax'] = str(restar_enteros_dentro_limite(y2, offset_x, 0))
+        xml_anotacion_trans = regenerarxml(anotacion_trans)
+        escribir_xml(xml_anotacion_trans, os.path.join(annotations, nombre_elemento + sufijo + '.xml'))
+        salvar_imagen(nimg, os.path.join(jpeg_images, na))
+        # TRASLADAR - Fin
+
     # mapa_clases = generar_mapeo_clases(lista_anots, lista_clases)
 
 

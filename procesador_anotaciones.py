@@ -35,7 +35,8 @@ def listar_anotaciones(directorio_base, listado_nombres):
                 clases.append(obj.name)
         salida[nombre] = a
     clases.sort()
-    return  salida, clases
+    return salida, clases
+
 
 def convertir_anotacion_individual(nombre_anotacion, ruta_destino):
     nombre_archivo = nombre_anotacion.split('/')[-1]
@@ -77,8 +78,8 @@ def escribir_xml(anotacionx, nombre_archivo):
     # tree = ET.ElementTree(element=anotacionx)
     # tree.write(nombre_archivo,method="xml")
     xmlstr = minidom.parseString(ET.tostring(anotacionx)).toprettyxml()
-    #indent='   '
-    xabc = xmlstr[xmlstr.find('?>')+2:]
+    # indent='   '
+    xabc = xmlstr[xmlstr.find('?>') + 2:]
     with open(nombre_archivo, 'w') as f:
         f.write(xabc)
 
@@ -88,14 +89,14 @@ def regenerarxml(anotacion):
     x_annotation = xml.Element('annotation')
     x_folder = xml.SubElement(x_annotation, 'folder')
     x_folder.text = anotacion.folder
-    x_filename = xml.SubElement(x_annotation,'filename')
+    x_filename = xml.SubElement(x_annotation, 'filename')
     x_filename.text = anotacion.filename
-    x_source = xml.SubElement(x_annotation,'source')
-    x_database = xml.SubElement(x_source,'database')
+    x_source = xml.SubElement(x_annotation, 'source')
+    x_database = xml.SubElement(x_source, 'database')
     x_database.text = anotacion.source['database']
-    x_annotation2 = xml.SubElement(x_source,'annotation')
+    x_annotation2 = xml.SubElement(x_source, 'annotation')
     x_annotation2.text = anotacion.source['annotation']
-    x_image = xml.SubElement(x_source,'image')
+    x_image = xml.SubElement(x_source, 'image')
     x_image.text = anotacion.source['image']
     x_size = xml.SubElement(x_annotation, 'size')
     x_width = xml.SubElement(x_size, 'width')
@@ -104,11 +105,11 @@ def regenerarxml(anotacion):
     x_height.text = anotacion.size['height']
     x_depth = xml.SubElement(x_size, 'depth')
     x_depth.text = anotacion.size['depth']
-    x_segmented = xml.SubElement(x_annotation,'segmented')
+    x_segmented = xml.SubElement(x_annotation, 'segmented')
     x_segmented.text = anotacion.segmented
     x_object = []
     for i in range(len(anotacion.objects)):
-        x_object.append( xml.SubElement(x_annotation, 'object') )
+        x_object.append(xml.SubElement(x_annotation, 'object'))
         x_obj_name = xml.SubElement(x_object[i], 'name')
         x_obj_name.text = anotacion.objects[i].name
         x_obj_pose = xml.SubElement(x_object[i], 'pose')
@@ -149,7 +150,7 @@ def reprocesar_anotacion(vieja_anotacion):
             obj.pose = o_pose
             obj.truncated = o_truncated
             obj.difficult = o_difficult
-            for k,v in obj.bndbox.items():
+            for k, v in obj.bndbox.items():
                 obj.bndbox[k] = p.bndbox[k]
             nueva_anotacion.objects.append(obj)
     return nueva_anotacion
@@ -173,7 +174,7 @@ def procesar_parte(objecto, raiz):
         if elemento.tag == 'name':
             parte.name = elemento.text
         elif elemento.tag == 'bndbox':
-            procesar_parte_bndbox(parte,elemento)
+            procesar_parte_bndbox(parte, elemento)
     objecto.parts.append(parte)
 
 
@@ -203,7 +204,7 @@ def procesar_objecto(annotation, raiz):
         elif elemento.tag == 'part':
             procesar_parte(objecto, elemento)
         elif elemento.tag == 'bndbox':
-            procesar_obj_bndbox(objecto,elemento)
+            procesar_obj_bndbox(objecto, elemento)
     annotation.objects.append(objecto)
 
 
@@ -230,7 +231,7 @@ def procesar_size(annotation, raiz):
 def cargar_anotacion_desde_archivo(archivo):
     tree = ET.parse(archivo)
     anotacion = procesar_anotacion(tree)
-    return  anotacion
+    return anotacion
 
 
 def procesar_anotacion(arbol):
@@ -269,7 +270,9 @@ def main():
     # r = regenerarxml(b)
     # escribir_xml(r,'r_limpio.xml')
 
-    convertir_anotacion_individual('/home/mauricio/Alicante/ImageManipulator/wrench_combination-00007b.xml','/home/mauricio/Alicante/ImageManipulator/salida/')
+    convertir_anotacion_individual('/home/mauricio/Alicante/ImageManipulator/wrench_combination-00007b.xml',
+                                   '/home/mauricio/Alicante/ImageManipulator/salida/')
     # convertir_anotaciones_directorio('/home/mauricio/Alicante/ImageManipulator/','/home/mauricio/Alicante/ImageManipulator/salida/')
+
 
 main()

@@ -32,9 +32,9 @@ def rotar_270(imagen):
     return img_rotada, '_rot270'
 
 
-def transladar(imagen,x=0,y=0):
-    img_traslada = imutils.translate(imagen, x, -1*y)
-    sufijo = '_tranx{:d}y{:d}'.format(x,y)
+def transladar(imagen, x=0, y=0):
+    img_traslada = imutils.translate(imagen, x, -1 * y)
+    sufijo = '_tranx{:d}y{:d}'.format(x, y)
     return img_traslada, sufijo
 
 
@@ -42,6 +42,7 @@ def cannyficar(imagen):
     gray = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
     canificada = imutils.auto_canny(gray)
     return canificada, '_canf'
+
 
 def cannyficar2(imagen):
     gray = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
@@ -54,6 +55,7 @@ def voltearVertical(imagen):
     volteada = cv2.flip(imagen, 0)
     return volteada, '_flipv'
 
+
 def voltearHorizontal(imagen):
     volteada = cv2.flip(imagen, 1)
     return volteada, '_fliph'
@@ -65,7 +67,7 @@ def transformar_archivo(ruta_origen, ruta_destino, nombre_archivo,
                         canificada=True, volvert=True, volhort=True):
     i = nombre_archivo.find(".")
     archivo_nombre = nombre_archivo[:i]
-    archivo_extension = nombre_archivo[i+1:]
+    archivo_extension = nombre_archivo[i + 1:]
     origen = ruta_origen + nombre_archivo
     destino = ruta_destino + archivo_nombre + '{}' + '.' + archivo_extension
     img = leer_imagen(origen)
@@ -82,7 +84,7 @@ def transformar_archivo(ruta_origen, ruta_destino, nombre_archivo,
         na = destino.format(sufijo)
         salvar_imagen(nimg, na)
     if trasladarxy:
-        nimg, sufijo = transladar(img,x,y)
+        nimg, sufijo = transladar(img, x, y)
         na = destino.format(sufijo)
         salvar_imagen(nimg, na)
     if canificada:
@@ -103,14 +105,16 @@ def listar_archivos(ruta_origen, ruta_destino):
     nombres_anotaciones = [f for f in glob.glob(ruta_origen + '/*.jpg')]
     for nombre_anotacion in nombres_anotaciones:
         nombre_archivo = nombre_anotacion.split('/')[-1]
-        ruta_anotacion = nombre_anotacion[:len(nombre_archivo)*-1]
-        transformar_archivo(ruta_origen=ruta_anotacion, ruta_destino=ruta_destino, nombre_archivo=nombre_archivo,x=50,y=50)
-        #copiar_archivos(ruta_anotacion, ruta_destino,nombre_archivo,'_1')
+        ruta_anotacion = nombre_anotacion[:len(nombre_archivo) * -1]
+        transformar_archivo(ruta_origen=ruta_anotacion, ruta_destino=ruta_destino, nombre_archivo=nombre_archivo, x=50,
+                            y=50)
+        # copiar_archivos(ruta_anotacion, ruta_destino,nombre_archivo,'_1')
+
 
 def copiar_archivos(ruta_origen, ruta_destino, nombre_archivo, sufijo=''):
     i = nombre_archivo.find(".")
     archivo_nombre = nombre_archivo[:i]
-    archivo_extension = nombre_archivo[i+1:]
+    archivo_extension = nombre_archivo[i + 1:]
     origen = ruta_origen + nombre_archivo
     destino = ruta_destino + archivo_nombre + sufijo + '.' + archivo_extension
     resultado = shutil.copyfile(origen, destino)
@@ -118,7 +122,9 @@ def copiar_archivos(ruta_origen, ruta_destino, nombre_archivo, sufijo=''):
 
 
 def main():
-    listar_archivos('/home/mauricio/Escritorio/tools_dataset/JPEGImages','/home/mauricio/Escritorio/tools_dataset/NewImages/')
+    listar_archivos('/home/mauricio/Escritorio/tools_dataset/JPEGImages',
+                    '/home/mauricio/Escritorio/tools_dataset/NewImages/')
+
 
 if __name__ == '__main__':
     main()

@@ -1,7 +1,7 @@
 from lxml import etree
 import xml.etree.cElementTree as xml
 from funcionales_generales import *
-import annotation
+from annotation import *
 
 
 def parseXML(file_name):
@@ -45,7 +45,7 @@ def procesar_anotacion(xml_ref):
 
 
 def cargar_anotacion(xml_ref):
-    annotation = annotation()
+    annotation = Annotation()
 
 
 def imprimir_anotation(annotation):
@@ -89,7 +89,7 @@ def imprimir_part(part):
 
 def contruir_xml():
     html = etree.Element("html")
-    #print(type(html))
+    # print(type(html))
     # etree.SubElement(html, "head").text = "Head of HTML"
     # etree.SubElement(html, "title").text = "I am the title!"
     # etree.SubElement(html, "body").text = "Here is the body of my example"
@@ -97,5 +97,5 @@ def contruir_xml():
 
 
 def imprimir_xml(documento):
-    #html = etree.XML('<html><head>Head of HTML</head><title>I am the title!</title><body>Here is the body</body></html>')
+    # html = etree.XML('<html><head>Head of HTML</head><title>I am the title!</title><body>Here is the body</body></html>')
     print(etree.tostring(documento, pretty_print=True).decode('utf-8'))

@@ -17,3 +17,15 @@ def verficar_ruta_directorio(ruta):
     else:
         salida = ruta
     return salida
+
+def sumar_enteros_dentro_limite(s1, s2, limite):
+    t = int(s1) + int(s2)
+    if t >= limite:
+        t = limite
+    return t
+
+def restar_enteros_dentro_limite(s1, s2, limite):
+    t = int(s1) - int(s2)
+    if t <= limite:
+        t = limite
+    return t
