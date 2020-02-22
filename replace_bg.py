@@ -25,3 +25,15 @@ masked_image = np.copy(image_copy)
 masked_image[mask != 0] = [0, 0, 0]
 plt.imshow(masked_image)
 plt.show()
+
+background_image = cv2.imread('bgmadera00.jpg')
+background_image = cv2.cvtColor(background_image, cv2.COLOR_BGR2RGB)
+crop_background = background_image[0:514, 0:816]
+
+crop_background[mask == 0] = [0,0,0]
+plt.imshow(crop_background)
+plt.show()
+
+complete_image = masked_image + crop_background
+plt.imshow(complete_image)
+plt.show()
