@@ -7,10 +7,12 @@ import cv2
 import glob
 import os
 import shutil
+from replace_bg import *
 
 
 def leer_imagen(nombre):
-    return cv2.imread(nombre)
+    img = cv2.imread(nombre)
+    return cambiar_fondo_aleatorio(img)
 
 
 def salvar_imagen(imagen, nombre):

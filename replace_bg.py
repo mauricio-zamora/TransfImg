@@ -3,6 +3,16 @@ import numpy as np
 import cv2
 import random
 
+def cambiar_fondo_aleatorio(imagen):
+      fondos = ['bgmetal00.jpg', 'bgmetal01.jpg', 'bgmetal02.jpg', 'bgmetal03.jpg', 'bgmetal04.jpg', 'bgmetal05.jpg',
+                'bgmetal06.jpg', 'bgmetal07.jpg', 'bgmetal08.jpg', 'bgmetal09.jpg', 'bgmadera00.jpg', 'bgmadera01.jpg',
+                'bgmadera02.jpg', 'bgmadera03.jpg', 'bgmadera04.jpg', 'bgmadera05.jpg', 'bgmadera06.jpg',
+                'bgmadera07.jpg', 'bgmadera08.jpg', 'bgmadera09.jpg', 'bgtextura00.jpg', 'bgtextura01.jpg',
+                'bgtextura02.jpg', 'bgtextura03.jpg', 'bgtextura04.jpg', 'bgtextura05.jpg', 'bgtextura06.jpg',
+                'bgtextura07.jpg', 'bgtextura08.jpg', 'bgtextura09.jpg']
+      fondo = random.choice(fondos)
+      background_image = cv2.imread(fondo)
+      return cambiar_fondo(imagen,background_image)
 
 def cambiar_fondo(imagen, fondo):
       image_copy = np.copy(imagen)
@@ -20,9 +30,13 @@ def cambiar_fondo(imagen, fondo):
 
 
 def main():
+      # lista_fondos = ['bgmetal0' + str(i) + '.jpg' for i in range(10)] + ['bgmadera0' + str(i) + '.jpg' for i in range(10)] + ['bgtextura0' + str(i) + '.jpg' for i in range(10)]
+      # print(lista_fondos)
+      # fondo = random.choice(lista_fondos)
       image = cv2.imread('bolt-00000.jpg')
-      background_image = cv2.imread('bgmadera00.jpg')
-      img = cambiar_fondo(image, background_image)
+      # background_image = cv2.imread(fondo)
+      # img = cambiar_fondo(image, background_image)
+      img = cambiar_fondo_aleatorio(image)
       plt.imshow(img)
       plt.show()
 
