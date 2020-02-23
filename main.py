@@ -66,11 +66,13 @@ def procesar_data_set(directorio_base):
         anotacion_base = reprocesar_anotacion(anotacion_cruda)
         xml_anotacion_base = regenerarxml(anotacion_base)
         escribir_xml(xml_anotacion_base, os.path.join(annotations, nombre_elemento + '.xml'))
-        shutil.copyfile(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'),
-                        os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        # shutil.copyfile(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'),
+        #                 os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        img = leer_imagen(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'))
+        salvar_imagen(img, os.path.join(jpeg_images, nombre_elemento + '.jpg'))
         destino = nombre_elemento + '{}' + '.jpg'
         # ROTAR 90 - Inicio
-        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        img = leer_imagen(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'))
         nimg, sufijo = rotar_90(img)
         na = destino.format(sufijo)
         anotacion_rota90 = reprocesar_anotacion(anotacion_cruda)
@@ -89,7 +91,7 @@ def procesar_data_set(directorio_base):
         salvar_imagen(nimg, os.path.join(jpeg_images, na))
         # ROTAR 90 - Fin
         # ROTAR 180 - Inicio
-        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        img = leer_imagen(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'))
         nimg, sufijo = rotar_180(img)
         na = destino.format(sufijo)
         anotacion_rota180 = reprocesar_anotacion(anotacion_cruda)
@@ -108,7 +110,7 @@ def procesar_data_set(directorio_base):
         salvar_imagen(nimg, os.path.join(jpeg_images, na))
         # ROTAR 180 - Fin
         # ROTAR 270 - Inicio
-        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        img = leer_imagen(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'))
         nimg, sufijo = rotar_270(img)
         na = destino.format(sufijo)
         anotacion_rota270 = reprocesar_anotacion(anotacion_cruda)
@@ -127,7 +129,7 @@ def procesar_data_set(directorio_base):
         salvar_imagen(nimg, os.path.join(jpeg_images, na))
         # ROTAR 270 - Fin
         # CANNYFICAR - Inicio
-        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        img = leer_imagen(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'))
         nimg, sufijo = cannyficar2(img)
         na = destino.format(sufijo)
         anotacion_cann = reprocesar_anotacion(anotacion_cruda)
@@ -139,7 +141,7 @@ def procesar_data_set(directorio_base):
         # CANNYFICAR - Fin
 
         # TRASLADAR - Inicio
-        img = leer_imagen(os.path.join(jpeg_images, nombre_elemento + '.jpg'))
+        img = leer_imagen(os.path.join(main_jpeg_images, nombre_elemento + '.jpg'))
         offset_x = 100
         offset_y = 100
         nimg, sufijo = transladar(img, offset_x, offset_y)
